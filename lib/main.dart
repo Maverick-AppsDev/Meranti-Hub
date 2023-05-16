@@ -12,12 +12,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Provider.debugCheckInvalidValueType = null;
-
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (_) => CategoryProvider()),
+        ChangeNotifierProvider<CategoryProvider>(
+          create: (_) => CategoryProvider(),
+        ),
+        // Add other providers if needed
       ],
       child: const MyApp(),
     ),
@@ -32,9 +33,6 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AuthPage(),
-      // body: new Container(
-      //   alignment: Alignment.center,
-      //   ),
     );
   }
 }
