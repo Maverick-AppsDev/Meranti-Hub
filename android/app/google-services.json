@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1078746643895",
+    "project_id": "meranti-hub",
+    "storage_bucket": "meranti-hub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078746643895:android:48295482fd04ef03cbfc32",
+        "android_client_info": {
+          "package_name": "com.example.main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078746643895-9k3u9ulvnftisrsf6vianfj99ejm47uo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC6A8Ou-bwBt_4N1zOjrXisJqpHB41tQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078746643895-9k3u9ulvnftisrsf6vianfj99ejm47uo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1078746643895-r00nk80lnumkubhl9l3l84v4nao38og6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sprint1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078746643895:android:8f41374a93cdcffacbfc32",
+        "android_client_info": {
+          "package_name": "com.example.sprint1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078746643895-9k3u9ulvnftisrsf6vianfj99ejm47uo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC6A8Ou-bwBt_4N1zOjrXisJqpHB41tQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078746643895-9k3u9ulvnftisrsf6vianfj99ejm47uo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1078746643895-r00nk80lnumkubhl9l3l84v4nao38og6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sprint1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
