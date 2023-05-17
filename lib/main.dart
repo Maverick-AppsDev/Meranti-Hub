@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
-import 'package:sprint1/pages/auth_page.dart';
-import 'package:sprint1/pages/provider/cat_provider.dart';
+//import 'package:sprint1/pages/auth_page.dart';
+import 'package:sprint1/pages/welcome_page.dart';
 import 'firebase_options.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<CategoryProvider>(
-          create: (_) => CategoryProvider(),
-        ),
-        // Add other providers if needed
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -30,9 +19,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthPage(),
+      home: WelcomePage(),
+      //home: AuthPage(),
+      // body: new Container(
+      //   alignment: Alignment.center,
+      //   ),
     );
   }
 }
