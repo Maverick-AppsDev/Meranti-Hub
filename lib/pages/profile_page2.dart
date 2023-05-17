@@ -29,7 +29,14 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
     final image =
         await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512,imageQuality: 75,);
 
-    Reference ref = FirebaseStorage.instance.ref().child('files/profilepic.jpg');
+    Reference ref;
+    if(imageURL == " "){
+      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      ref = FirebaseStorage.instance.ref().child('files/' + uniqueFileName + '.jpg');
+    }
+    else{
+      ref = FirebaseStorage.instance.refFromURL(imageURL);
+    }
 
     await ref.putFile(File(image!.path));
     ref.getDownloadURL().then((value){
@@ -154,6 +161,7 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
                 ElevatedButton(
                   child: const Text('Saved'),
                   onPressed: () {
+
                     final user = Users(
                       fullName: fullName.text,
                       shopName: shopName.text,
