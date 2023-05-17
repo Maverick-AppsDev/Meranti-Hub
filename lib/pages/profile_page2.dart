@@ -5,10 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../components/main_textfield.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:path/path.dart';
 import '../components/users.dart';
-import 'package:file_picker/file_picker.dart';
 import '../services/after_layout.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -110,12 +107,11 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
                         bottom: 0,
                         right: 0,
                         // child: InkWell(
-                        //   onTap: getImage,
                         child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
                               color: Colors.white, shape: BoxShape.circle),
-                          child: Icon(Icons.camera_alt),
+                          child: const Icon(Icons.camera_alt),
                         ),
                       )
                       // )
@@ -145,11 +141,6 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
                   hintText: 'Email',
                   obscureText: false,
                 ),
-                // Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: Text(auth.currentUser!.email!,
-                //         style: TextStyle(fontSize: 16))),
-
                 const SizedBox(height: 10),
                 // User phone number
                 MainTextField(
@@ -170,7 +161,6 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
                       imageUrl: imageURL
                     );
                     createUser(user);
-                    //uploadFile();
                     Navigator.pop(context);
                   },
                 )
