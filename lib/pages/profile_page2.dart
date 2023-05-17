@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 import '../components/users.dart';
 import 'package:file_picker/file_picker.dart';
+import '../services/after_layout.dart';
 
 class ProfilePage extends StatefulWidget {
   // final User user; required this.user;
@@ -18,59 +19,44 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<ProfilePage>{
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final fullName = TextEditingController();
   final shopName = TextEditingController();
   final phoneNumber = TextEditingController();
-  //File? image;
-  final picker = ImagePicker();
-  bool isEditing = false;
-  PlatformFile? pickedFile;
   String imageURL = " ";
 
   //Function to get image from gallery
   Future<void> getImage() async {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 512,
-      maxHeight: 512,
-      imageQuality: 75,
-    );
+    final image =
+        await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512,imageQuality: 75,);
 
-    Reference ref = FirebaseStorage.instance.ref().child('files/');
+    Reference ref = FirebaseStorage.instance.ref().child('files/profilepic.jpg');
 
     await ref.putFile(File(image!.path));
-    ref.getDownloadURL().then((value) {
-      print(value);
-      setState(() {
+    ref.getDownloadURL().then((value){
+      setState((){
         imageURL = value;
       });
     });
   }
 
-  // Future selectFile() async {
-  //   final result = await FilePicker.platform.pickFiles();
-  //   if (result == null) return;
+  Future<Users?> readUser() async {
+    final docUser = FirebaseFirestore.instance.collection('users').doc(auth.currentUser?.email);
+    final snapshot = await docUser.get();
 
-  //   setState(() {
-  //     pickedFile = result.files.first;
-  //   });
-  // }
-
-  // Future uploadFile() async {
-  //   final path = 'files/myid.jpg';
-  //   final file = File(image!.path!);
-
-  //   final ref = FirebaseStorage.instance.ref().child(path);
-  //   ref.putFile(file);
-  // }
-
-  // Read the data from firebase
-  // Stream<List<Users>> readUsers() =>
-  //     FirebaseFirestore.instance.collection('users').snapshots().map(
-  //         (snapshot) => snapshot.docs.map((doc) => Users.fromJson(doc.data())));
+    if(snapshot.exists) {
+      final user = Users.fromJson(snapshot.data()!);
+      fullName.text = user.fullName;
+      shopName.text = user.shopName;
+      phoneNumber.text = user.phone;
+      setState((){
+        imageURL = user.imageUrl;
+      });
+      return user;
+    }
+  }
 
   Future createUser(Users user) async {
     final docUser = FirebaseFirestore.instance
@@ -84,9 +70,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Define the collection name and document ID
-    const collectionName = 'users';
-    final documentId = auth.currentUser!.uid;
 
     // Update the data in Firestore
     return Scaffold(
@@ -103,8 +86,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 // User profile picture
                 GestureDetector(
-                    onTap: () async {
-                      await getImage();
+                    onTap: () {
+                      getImage();
                     },
                     child: Stack(children: [
                       Container(
@@ -136,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       )
                       // )
-                    ])),
+                  ])),
 
                 const SizedBox(height: 10),
                 // User full name
@@ -184,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       fullName: fullName.text,
                       shopName: shopName.text,
                       phone: phoneNumber.text,
-                      // imageFile: image
+                      imageUrl: imageURL
                     );
                     createUser(user);
                     //uploadFile();
@@ -198,4 +181,12 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-}
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+     readUser();
+    }
+  }
+
+
+
