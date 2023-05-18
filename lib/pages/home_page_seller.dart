@@ -6,6 +6,7 @@ import 'package:sprint1/pages/categories.dart';
 import 'package:sprint1/pages/singal_products.dart';
 
 import 'add_new_items.dart';
+import 'edit_items.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,8 +48,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildRicesProduct() {
-    //String id = 'rices-product';
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -185,16 +184,16 @@ class _HomePageState extends State<HomePage> {
                     title: "User Profile",
                     context: context,
                     nextScreen: const ProfilePage()),
-                listTile(
-                    icon: Icons.add_outlined,
-                    title: "Add New Food Item",
-                    context: context,
-                    nextScreen: AddNewItems()), // Next sprint
+                // listTile(
+                //     icon: Icons.add_outlined,
+                //     title: "Add New Food Item",
+                //     context: context,
+                //     nextScreen: AddNewItems()),
                 // listTile(
                 //     icon: Icons.edit_outlined,
                 //     title: "Edit Food Item",
                 //     context: context,
-                //     nextScreen: EditItems()), // Next sprint
+                //     nextScreen: EditItems()),
                 Container(
                   height: 300,
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -263,17 +262,28 @@ class _HomePageState extends State<HomePage> {
             ),
             buildRicesProduct(),
             buildNoodlesProduct(),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-            //   child: Column(
-            //     children: [
-            //       //Categories(),
-            //     ],
-            //   ),
-            // ),
+            SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+                child: Icon(
+                  Icons.add,
+                  color: Colors.red[100],
+                ),
+                backgroundColor: Colors.white,
+                splashColor: Colors.amber,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddNewItems(),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
