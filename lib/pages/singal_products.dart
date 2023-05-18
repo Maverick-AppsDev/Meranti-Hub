@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sprint1/pages/edit_items.dart';
 import 'package:sprint1/pages/home_page_seller.dart';
 import 'package:sprint1/pages/profile_page.dart';
+import 'add_new_items.dart';
 
 class SingalProduct extends StatelessWidget {
   final String productImage;
@@ -22,8 +24,8 @@ class SingalProduct extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
-            height: 230,
-            width: 160,
+            height: 260,
+            width: 170,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -65,13 +67,30 @@ class SingalProduct extends StatelessWidget {
                             color: Colors.grey,
                           ),
                         ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                icon: Icon(Icons.edit_square),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditItems(),
+                                      ));
+                                }),
+                          ],
+                        )
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
