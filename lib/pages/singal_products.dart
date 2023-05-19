@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sprint1/pages/edit_items.dart';
 import 'package:sprint1/pages/home_page_seller.dart';
-import 'package:sprint1/pages/profile_page.dart';
+import 'package:sprint1/pages/profile_page2.dart';
 import 'add_new_items.dart';
 
 class SingalProduct extends StatelessWidget {
@@ -74,7 +74,7 @@ class SingalProduct extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                                icon: Icon(Icons.edit_square),
+                                icon: Icon(Icons.edit),
                                 onPressed: () {
                                   Navigator.push(
                                       context,

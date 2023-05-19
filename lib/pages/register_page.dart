@@ -4,7 +4,7 @@ import 'package:sprint1/components/main_button.dart';
 import 'package:sprint1/components/main_textfield.dart';
 import 'package:sprint1/components/tiles.dart';
 
-import '../services/auth_service.dart';
+import '/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   void Function()? onTap;
@@ -20,7 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordControl = TextEditingController();
   final confirmPasswordControl = TextEditingController();
 
-  // sign in method
+  // sign up method
   void signUp() async {
     // loading screen
     showDialog(

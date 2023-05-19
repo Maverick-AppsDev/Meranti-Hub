@@ -16,7 +16,8 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<ProfilePage>{
+class _ProfilePageState extends State<ProfilePage>
+    with AfterLayoutMixin<ProfilePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final fullName = TextEditingController();
@@ -26,36 +27,43 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
 
   //Function to get image from gallery
   Future<void> getImage() async {
-    final image =
-        await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512,imageQuality: 75,);
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 75,
+    );
 
     Reference ref;
-    if(imageURL == " "){
+    if (imageURL == " ") {
       String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-      ref = FirebaseStorage.instance.ref().child('files/' + uniqueFileName + '.jpg');
-    }
-    else{
+      ref = FirebaseStorage.instance
+          .ref()
+          .child('files/' + uniqueFileName + '.jpg');
+    } else {
       ref = FirebaseStorage.instance.refFromURL(imageURL);
     }
 
     await ref.putFile(File(image!.path));
-    ref.getDownloadURL().then((value){
-      setState((){
+    ref.getDownloadURL().then((value) {
+      setState(() {
         imageURL = value;
       });
     });
   }
 
   Future<Users?> readUser() async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc(auth.currentUser?.email);
+    final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser?.email);
     final snapshot = await docUser.get();
 
-    if(snapshot.exists) {
+    if (snapshot.exists) {
       final user = Users.fromJson(snapshot.data()!);
       fullName.text = user.fullName;
       shopName.text = user.shopName;
       phoneNumber.text = user.phone;
-      setState((){
+      setState(() {
         imageURL = user.imageUrl;
       });
       return user;
@@ -74,7 +82,6 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
 
   @override
   Widget build(BuildContext context) {
-
     // Update the data in Firestore
     return Scaffold(
       backgroundColor: Colors.red[100],
@@ -122,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
                         ),
                       )
                       // )
-                  ])),
+                    ])),
 
                 const SizedBox(height: 10),
                 // User full name
@@ -161,13 +168,11 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
                 ElevatedButton(
                   child: const Text('Saved'),
                   onPressed: () {
-
                     final user = Users(
-                      fullName: fullName.text,
-                      shopName: shopName.text,
-                      phone: phoneNumber.text,
-                      imageUrl: imageURL
-                    );
+                        fullName: fullName.text,
+                        shopName: shopName.text,
+                        phone: phoneNumber.text,
+                        imageUrl: imageURL);
                     createUser(user);
                     Navigator.pop(context);
                   },
@@ -182,9 +187,6 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin<Profile
 
   @override
   void afterFirstLayout(BuildContext context) {
-     readUser();
-    }
+    readUser();
   }
-
-
-
+}

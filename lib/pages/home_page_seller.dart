@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sprint1/pages/profile_page.dart';
+import 'package:sprint1/pages/profile_page2.dart';
 //import 'package:sprint1/pages/singal_products.dart';
 import 'package:sprint1/pages/categories.dart';
 import 'package:sprint1/pages/singal_products.dart';
@@ -244,33 +244,39 @@ class _HomePageState extends State<HomePage> {
           IconButton(onPressed: logOut, icon: const Icon(Icons.logout))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: ListView(
-          children: [
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://citinewsroom.com/wp-content/uploads/2021/07/Food.jpg'),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: ListView(
+              children: [
+                Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          'https://citinewsroom.com/wp-content/uploads/2021/07/Food.jpg'),
+                    ),
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(10),
-              ),
+                buildRicesProduct(),
+                buildNoodlesProduct(),
+                const SizedBox(height: 10)
+              ],
             ),
-            buildRicesProduct(),
-            buildNoodlesProduct(),
-            SizedBox(
-              height: 10,
-            ),
-            FloatingActionButton(
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
                 child: Icon(
                   Icons.add,
-                  color: Colors.red[100],
+                  color: Colors.white,
                 ),
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.pink[300],
                 splashColor: Colors.amber,
                 onPressed: () {
                   Navigator.push(
@@ -280,12 +286,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
-
-//'SUCCESSFULLY LOGGED IN AS:' + user.email!

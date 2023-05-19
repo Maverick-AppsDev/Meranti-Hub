@@ -154,25 +154,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               const SizedBox(height: 20),
-              // google signin button
-              // ElevatedButton(
-              //   onPressed: () => AuthService().signInWithGoogle(),
-              //   child:
-              //       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              //     Image.asset(
-              //       'lib/images/googleLogo.png',
-              //       width: 24,
-              //       height: 24,
-              //     ),
-              //     SizedBox(width: 8),
-              //     Text('Google',
-              //         style: TextStyle(
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.bold,
-              //             color: Colors.white))
-              //   ]),
-              // ),
 
+              // google signin button
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
