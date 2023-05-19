@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../components/food.dart';
 import '../services/firebase_services.dart';
 
 class AddNewItems extends StatefulWidget {
@@ -10,30 +14,84 @@ class AddNewItems extends StatefulWidget {
 }
 
 class _AddNewItemsState extends State<AddNewItems> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  var productCategoriesController = TextEditingController();
+  var productNameController = TextEditingController();
+  var productPriceController = TextEditingController();
+  List<String> categoriesList = ['Rice', 'Noodle'];
   // Function to get image from gallery
   File? image;
+  String foodImg = "";
 
-  final picker = ImagePicker();
+  // final picker = ImagePicker();
 
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  // Save the image to storage
+  Future<void> getImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 75,
+    );
 
-    setState(() {
-      if (pickedFile != null) {
+    if (pickedFile != null) {
+      setState(() {
         image = File(pickedFile.path);
-      } else {
-        print('No Image Selected.');
-      }
+      });
+    } else {
+      print('No Image Selected.');
+    }
+
+    Reference ref;
+    if (foodImg == "") {
+      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      ref = FirebaseStorage.instance
+          .ref()
+          .child('productImage/' + uniqueFileName + '.jpg');
+    } else {
+      ref = FirebaseStorage.instance.refFromURL(foodImg);
+    }
+
+    await ref.putFile(File(image!.path));
+    ref.getDownloadURL().then((value) {
+      setState(() {
+        foodImg = value;
+      });
     });
   }
 
-  var productCategoriesController = TextEditingController();
+  // create the database
+  Future createFood(Food food) async {
+    final user = auth.currentUser;
+    if (user != null) {
+      final userId = user.uid;
+      final collectRef = FirebaseFirestore.instance.collection('categories');
 
-  var productNameController = TextEditingController();
+      final docRef = collectRef.doc();
+      // final docRef = await collectRef.add(food.toJson());
+      final docId = docRef.id;
+      final foodId = Food(
+          id: docId,
+          category: food.category,
+          name: food.name,
+          price: food.price,
+          foodImgUrl: food.foodImgUrl);
+      await docRef.set(foodId.toJson());
 
-  var productPriceController = TextEditingController();
+      final userRef =
+          FirebaseFirestore.instance.collection('users').doc(userId);
+      await userRef.collection('categories').doc(docId).set({'foodId': docId});
+    }
+    // final docUser = FirebaseFirestore.instance
+    //     .collection('categories')
+    //     .doc(auth.currentUser?.email);
+    // food.id = docUser.id;
 
-  List<String> categoriesList = ['Rice', 'Noodle'];
+    // final json = food.toJson();
+    // await docUser.set(json);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,24 +159,29 @@ class _AddNewItemsState extends State<AddNewItems> {
             Row(
               children: [
                 Expanded(
-                  child: NeumorphicButton(
-                    onPressed: () {
+                  child: GestureDetector(
+                    onTap: () {
                       getImage();
                     },
-                    style:
-                        NeumorphicStyle(color: Theme.of(context).primaryColor),
-                    child: Text(
-                      'Upload Image',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.pink[300],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      //     NeumorphicStyle(color: Theme.of(context).primaryColor),
+                      // child:
+                      child: Text(
+                        'Upload Image',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
-            SizedBox(
-              height: 40,
-            ),
+            SizedBox(height: 40),
             InkWell(
               onTap: () {
                 showDialog(
@@ -161,28 +224,45 @@ class _AddNewItemsState extends State<AddNewItems> {
                   }
                   return null;
                 }),
-            SizedBox(
-              height: 40,
-            ),
-            Container(
-              height: kToolbarHeight,
-              width: screenWidth,
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.only(left: 11),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Colors.blue,
-              ),
-              child: Center(
-                child: Text(
-                  'SAVE',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.pink.shade300),
+                    minimumSize:
+                        MaterialStateProperty.all<Size>(const Size(300, 50))),
+                onPressed: () {
+                  final food = Food(
+                      name: productNameController.text,
+                      category: productCategoriesController.text,
+                      price: double.parse(productPriceController.text),
+                      foodImgUrl: foodImg);
+                  createFood(food);
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Save',
+                  style: TextStyle(fontSize: 20),
+                ))
+            // Container(
+            //   height: kToolbarHeight,
+            //   width: screenWidth,
+            //   margin: const EdgeInsets.only(bottom: 12),
+            //   padding: const EdgeInsets.only(left: 11),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(4),
+            //     color: Colors.red[300],
+            //   ),
+            //   child: Center(
+            //     child: Text(
+            //       'SAVE',
+            //       style: const TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 20,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
