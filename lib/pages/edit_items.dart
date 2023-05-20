@@ -80,10 +80,10 @@ class EditItemsState extends State<EditItems> {
       productCategoriesController.text = food.category;
       productNameController.text = food.name;
       productPriceController.text = food.price.toString();
+      image = await urlToFile(food.foodImgUrl);
       setState(() {
         foodImg = food.foodImgUrl;
       });
-      image = await urlToFile(food.foodImgUrl);
       return food;
     }
   }
@@ -112,8 +112,8 @@ class EditItemsState extends State<EditItems> {
       final collectRef = FirebaseFirestore.instance
           .collection('users')
           .doc(user.email)
-          .collection(food.category)
-          .doc(food.id);
+          .collection(widget.foodCategory)
+          .doc(widget.foodId);
 
       final docId = collectRef.id;
       final foodId = Food(
