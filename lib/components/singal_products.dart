@@ -8,12 +8,16 @@ class SingalProduct extends StatelessWidget {
   final String productImage;
   final String productName;
   final String productPrice;
+  final String productId;
+  final String productCategory;
   final ImagePicker imagePicker = ImagePicker();
   //final Function onTap;
   SingalProduct(
       {required this.productImage,
       required this.productName,
-      required this.productPrice});
+      required this.productPrice,
+      required this.productId,
+      required this.productCategory});
 
 // allow user to pick image that doesn't start with http
   Future<void> pickImage(BuildContext context) async {
@@ -104,7 +108,9 @@ class SingalProduct extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditItems(),
+                                        builder: (context) => EditItems(
+                                            foodCategory: productCategory,
+                                            foodId: productId),
                                       ));
                                 }),
                           ],
