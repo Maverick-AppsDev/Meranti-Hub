@@ -1,20 +1,34 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sprint1/pages/edit_items.dart';
-import 'package:sprint1/pages/home_page_seller.dart';
-import 'package:sprint1/pages/profile_page2.dart';
-import '../pages/add_new_items.dart';
 
 class SingalProduct extends StatelessWidget {
   final String productImage;
   final String productName;
   final String productPrice;
+  final ImagePicker imagePicker = ImagePicker();
   //final Function onTap;
   SingalProduct(
       {required this.productImage,
       required this.productName,
       required this.productPrice});
+
+// allow user to pick image that doesn't start with http
+  Future<void> pickImage(BuildContext context) async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Handle the picked image
+      String imagePath = pickedFile.path;
+      // Perform the necessary actions with the imagePath (e.g., save it, update the UI)
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No image selected')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +48,33 @@ class SingalProduct extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  //   onTap: onTap,
+                  onTap: () {
+                    pickImage(context);
+                  },
                   child: Container(
                       height: 150,
                       padding: EdgeInsets.all(5),
                       width: double.infinity,
                       child: AspectRatio(
                         aspectRatio: 1.0,
-                        child: Image.network(productImage, fit: BoxFit.contain),
+                        child: productImage.startsWith('http')
+                            ? Image.network(
+                                productImage,
+                                fit: BoxFit.contain,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  // Display an error icon if the image fails to load
+                                  return const Icon(Icons.error);
+                                },
+                              )
+                            : productImage.isNotEmpty
+                                ? Image.file(File(productImage),
+                                    fit: BoxFit.contain, errorBuilder:
+                                        (BuildContext context, Object exception,
+                                            StackTrace? stackTrace) {
+                                    return const Icon(Icons.error);
+                                  })
+                                : Icon(Icons.error, color: Colors.grey),
                       )),
                 ),
                 Expanded(
