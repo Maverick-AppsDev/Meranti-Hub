@@ -56,16 +56,24 @@ class EditItemsState extends State<EditItems> {
             Row(
               children: [
                 Expanded(
-                  child: NeumorphicButton(
-                    onPressed: () {
+                  child: GestureDetector(
+                    onTap: () {
                       getImage();
                     },
-                    style:
-                        NeumorphicStyle(color: Theme.of(context).primaryColor),
-                    child: Text(
-                      'Upload Image',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.pink[300],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      // style:
+
+                      //NeumorphicStyle(color: Theme.of(context).primaryColor),
+                      child: Text(
+                        'Upload Image',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
@@ -80,25 +88,36 @@ class EditItemsState extends State<EditItems> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              height: kToolbarHeight,
-              width: screenWidth,
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.only(left: 11),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Colors.blue,
-              ),
-              child: Center(
-                child: Text(
-                  'SAVE',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.pink.shade300),
+                    minimumSize:
+                        MaterialStateProperty.all<Size>(const Size(300, 50))),
+                onPressed: () {},
+                child: const Text(
+                  'Save',
+                  style: TextStyle(fontSize: 20),
+                ))
+            // Container(
+            //   height: kToolbarHeight,
+            //   width: screenWidth,
+            //   margin: const EdgeInsets.only(bottom: 12),
+            //   padding: const EdgeInsets.only(left: 11),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(4),
+            //     color: Colors.blue,
+            //   ),
+            //   child: Center(
+            //     child: Text(
+            //       'SAVE',
+            //       style: const TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 20,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
