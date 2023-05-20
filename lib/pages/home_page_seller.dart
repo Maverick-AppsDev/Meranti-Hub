@@ -101,7 +101,9 @@ class _HomePageState extends State<HomePage> {
                         productImage: riceProduct.foodImgUrl,
                         productName: riceProduct.name,
                         productPrice:
-                            'RM ${riceProduct.price.toStringAsFixed(2)}');
+                            'RM ${riceProduct.price.toStringAsFixed(2)}',              
+                        productCategory: riceProduct.category,
+                        productId: riceProduct.id,);
                   },
                 );
               } else if (snapshot.hasError) {
@@ -146,7 +148,9 @@ class _HomePageState extends State<HomePage> {
                         productImage: noodleProduct.foodImgUrl,
                         productName: noodleProduct.name,
                         productPrice:
-                            'RM ${noodleProduct.price.toStringAsFixed(2)}');
+                            'RM ${noodleProduct.price.toStringAsFixed(2)}',
+                        productCategory: noodleProduct.category,
+                        productId: noodleProduct.id,);
                   },
                 );
               } else if (snapshot.hasError) {
