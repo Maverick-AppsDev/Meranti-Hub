@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1/pages/profile_page2.dart';
@@ -7,6 +8,7 @@ import 'package:sprint1/pages/singal_products.dart';
 
 import 'add_new_items.dart';
 import 'edit_items.dart';
+import '../components/food.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +25,14 @@ class _HomePageState extends State<HomePage> {
   void logOut() {
     FirebaseAuth.instance.signOut();
   }
+
+  Stream<List<Food>> readRice() => FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.email)
+      .collection('Rice')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Food.fromJson(doc.data())).toList());
 
   Widget listTile(
       {required IconData icon,

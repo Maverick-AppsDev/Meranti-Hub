@@ -66,31 +66,21 @@ class _AddNewItemsState extends State<AddNewItems> {
   Future createFood(Food food) async {
     final user = auth.currentUser;
     if (user != null) {
-      final userId = user.uid;
-      final collectRef = FirebaseFirestore.instance.collection('categories');
+      final collectRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.email)
+          .collection(food.category)
+          .doc();
 
-      final docRef = collectRef.doc();
-      // final docRef = await collectRef.add(food.toJson());
-      final docId = docRef.id;
+      final docId = collectRef.id;
       final foodId = Food(
           id: docId,
           category: food.category,
           name: food.name,
           price: food.price,
           foodImgUrl: food.foodImgUrl);
-      await docRef.set(foodId.toJson());
-
-      final userRef =
-          FirebaseFirestore.instance.collection('users').doc(userId);
-      await userRef.collection('categories').doc(docId).set({'foodId': docId});
+      await collectRef.set(foodId.toJson());
     }
-    // final docUser = FirebaseFirestore.instance
-    //     .collection('categories')
-    //     .doc(auth.currentUser?.email);
-    // food.id = docUser.id;
-
-    // final json = food.toJson();
-    // await docUser.set(json);
   }
 
   @override
