@@ -2,13 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1/pages/profile_page2.dart';
-//import 'package:sprint1/pages/singal_products.dart';
 import 'package:sprint1/pages/categories.dart';
-import 'package:sprint1/pages/singal_products.dart';
+import 'package:sprint1/components/singal_products.dart';
 
+import '../components/food.dart';
 import 'add_new_items.dart';
 import 'edit_items.dart';
-import '../components/food.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,19 +19,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //get info about user
   final user = FirebaseAuth.instance.currentUser!;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String imageURL = '';
 
   //logout method
   void logOut() {
     FirebaseAuth.instance.signOut();
   }
-
-  Stream<List<Food>> readRice() => FirebaseFirestore.instance
-      .collection('users')
-      .doc(user.email)
-      .collection('Rice')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Food.fromJson(doc.data())).toList());
 
   Widget listTile(
       {required IconData icon,
@@ -51,102 +45,133 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(
           title,
-          style: TextStyle(color: Colors.black45),
+          style: const TextStyle(color: Colors.black45),
         ),
       ),
     );
   }
 
+// Used to read the data of Rice category
+  Stream<List<Food>> readRice() => FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.email)
+      .collection('Rice')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Food.fromJson(doc.data())).toList());
+
+// Used to read the data of Noodle catefory
+  Stream<List<Food>> readNoodle() => FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.email)
+      .collection('Noodle')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Food.fromJson(doc.data())).toList());
+
   Widget buildRicesProduct() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Rices'),
-              Text(
-                'View All',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ],
-          ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Rices'),
+            const Text(
+              'View All',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SingalProduct(
-                productImage:
-                    'https://t3.ftcdn.net/jpg/03/56/05/00/360_F_356050015_66YJS3i1iucf7TqDIVCVKZfifnIrsLdo.jpg',
-                productName: "Nasi Lemak Ayam",
-                productPrice: "RM 7.00",
-              ),
-              SingalProduct(
-                productImage:
-                    'https://resepichenom.com/media/dc1f7e26658201737ba55e8cb9f940e792bc03c1.jpeg',
-                productName: "Nasi Goreng Kampung",
-                productPrice: "RM 6.00",
-              ),
-              SingalProduct(
-                productImage:
-                    'https://i0.wp.com/resepibonda.my/wp-content/uploads/2015/03/nasi-goreng-pattaya.jpg?ssl=1',
-                productName: "Nasi Goreng Pattaya",
-                productPrice: "RM 7.00",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+      ),
+      SizedBox(
+        height: 260,
+        child: StreamBuilder<List<Food>>(
+            stream: readRice(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Food>> snapshot) {
+              if (snapshot.hasData) {
+                final riceProducts = snapshot.data!;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: riceProducts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final riceProduct = riceProducts[index];
+                    return SingalProduct(
+                        productImage: riceProduct.foodImgUrl,
+                        productName: riceProduct.name,
+                        productPrice:
+                            'RM ${riceProduct.price.toStringAsFixed(2)}');
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
+      ),
+    ]);
   }
 
   Widget buildNoodlesProduct() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Noodles'),
-              Text(
-                'View All',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ],
-          ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Noodles'),
+            const Text(
+              'View All',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SingalProduct(
-                productImage:
-                    'https://thumbs.dreamstime.com/b/malaysian-cuisine-maggi-goreng-mamak-style-spicy-fried-curry-instant-noodles-asian-ready-to-serve-wooden-dining-table-38740751.jpg',
-                productName: "Maggi Goreng",
-                productPrice: "RM 6.00",
-              ),
-              SingalProduct(
-                productImage:
-                    'https://thumbs.dreamstime.com/b/chinese-malay-indian-fried-mee-noodle-goreng-bee-hoon-breakfast-lunch-dinner-238025675.jpg',
-                productName: "Mee Goreng",
-                productPrice: "RM 6.00",
-              ),
-              SingalProduct(
-                productImage:
-                    'https://www.mstar.com.my/image/830/553?url=https%3A%2F%2Fclips.mstar.com.my%2Fimages%2Fblob%2F6304051E-EB2F-4F2F-9A7C-CA7B6435398A',
-                productName: "Bihun Goreng Udang",
-                productPrice: "RM 8.00",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+      ),
+      SizedBox(
+        height: 260,
+        child: StreamBuilder<List<Food>>(
+            stream: readNoodle(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Food>> snapshot) {
+              if (snapshot.hasData) {
+                final noodleProducts = snapshot.data!;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: noodleProducts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final noodleProduct = noodleProducts[index];
+                    return SingalProduct(
+                        productImage: noodleProduct.foodImgUrl,
+                        productName: noodleProduct.name,
+                        productPrice:
+                            'RM ${noodleProduct.price.toStringAsFixed(2)}');
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
+      ),
+    ]);
+  }
+
+  // Function to read the user's data from Firestore
+  Future<void> readUser() async {
+    final docUser =
+        FirebaseFirestore.instance.collection('users').doc(user.email);
+    // .doc(auth.currentUser?.email);
+    final snapshot = await docUser.get();
+
+    if (snapshot.exists) {
+      final user = snapshot.data();
+      setState(() {
+        imageURL = user?['imageUrl'] ?? '';
+      });
+    }
   }
 
   @override
@@ -154,7 +179,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: Drawer(
         child: Container(
-          color: Color(0xfff8dae7),
+          color: const Color(0xfff8dae7),
           child: GestureDetector(
             child: ListView(
               children: [
@@ -165,20 +190,17 @@ class _HomePageState extends State<HomePage> {
                         backgroundColor: Colors.white54,
                         radius: 43,
                         child: CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.pink,
-                        ),
+                            radius: 40,
+                            backgroundImage: imageURL.isNotEmpty
+                                ? NetworkImage(imageURL)
+                                : null),
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
+                      const SizedBox(width: 20),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Text("Welcome!"),
-                          SizedBox(
-                            height: 7,
-                          ),
+                          SizedBox(height: 7),
                         ],
                       )
                     ],
@@ -194,28 +216,16 @@ class _HomePageState extends State<HomePage> {
                     title: "User Profile",
                     context: context,
                     nextScreen: const ProfilePage()),
-                // listTile(
-                //     icon: Icons.add_outlined,
-                //     title: "Add New Food Item",
-                //     context: context,
-                //     nextScreen: AddNewItems()),
-                // listTile(
-                //     icon: Icons.edit_outlined,
-                //     title: "Edit Food Item",
-                //     context: context,
-                //     nextScreen: EditItems()),
                 Container(
                   height: 300,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Contact Support"),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      const Text("Contact Support"),
+                      const SizedBox(height: 10),
                       Row(
-                        children: [
+                        children: const [
                           Text("Call us: "),
                           SizedBox(
                             width: 10,
@@ -223,17 +233,13 @@ class _HomePageState extends State<HomePage> {
                           Text("+6010123456"),
                         ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      const SizedBox(height: 5),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: [
+                          children: const [
                             Text("Mail us: "),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            SizedBox(width: 10),
                             Text("maverick@gmail.com")
                           ],
                         ),
@@ -248,7 +254,7 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.red[100],
       appBar: AppBar(
-        backgroundColor: Color(0xfffd2e6),
+        backgroundColor: const Color(0xfffd2e6),
         title: const Text('Home Page'),
         actions: [
           IconButton(onPressed: logOut, icon: const Icon(Icons.logout))
@@ -263,7 +269,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   height: 200,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
+                    image: const DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
                           'https://citinewsroom.com/wp-content/uploads/2021/07/Food.jpg'),
@@ -282,7 +288,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 16,
             right: 16,
             child: FloatingActionButton(
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: Colors.white,
                 ),
@@ -300,5 +306,11 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readUser();
   }
 }

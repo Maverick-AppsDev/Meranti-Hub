@@ -85,10 +85,6 @@ class _AddNewItemsState extends State<AddNewItems> {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseServices services = FirebaseServices();
-    // var catProvider = Provider.of<CategoryProvider>(context);
-    // catProvider.getCategory('Categories');
-
     Widget listView({fieldValue, list, textController}) {
       return Dialog(
         child: Column(
@@ -125,7 +121,7 @@ class _AddNewItemsState extends State<AddNewItems> {
       backgroundColor: Colors.red[100],
       appBar: AppBar(
         backgroundColor: Color(0xfffd2e6),
-        title: const Text('Add New Page'),
+        title: const Text('Add New Item'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -143,9 +139,7 @@ class _AddNewItemsState extends State<AddNewItems> {
                     : Image.file(image!),
               ),
             ),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Expanded(
@@ -234,25 +228,6 @@ class _AddNewItemsState extends State<AddNewItems> {
                   'Save',
                   style: TextStyle(fontSize: 20),
                 ))
-            // Container(
-            //   height: kToolbarHeight,
-            //   width: screenWidth,
-            //   margin: const EdgeInsets.only(bottom: 12),
-            //   padding: const EdgeInsets.only(left: 11),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(4),
-            //     color: Colors.red[300],
-            //   ),
-            //   child: Center(
-            //     child: Text(
-            //       'SAVE',
-            //       style: const TextStyle(
-            //         color: Colors.white,
-            //         fontSize: 20,
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
