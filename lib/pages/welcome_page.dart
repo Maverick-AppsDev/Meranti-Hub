@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/rounded_button.dart';
-import 'package:sprint1/pages/background.dart';
+import 'package:sprint1/components/background.dart';
 import 'package:sprint1/pages/auth_page.dart';
 import 'package:sprint1/components/constant.dart';
 import 'package:sprint1/pages/cust_page.dart';
