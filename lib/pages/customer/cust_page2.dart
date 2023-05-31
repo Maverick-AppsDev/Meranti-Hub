@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/constant.dart';
 
-// Chat GPT Code
 class Shop {
   final String shopName;
   final String imageUrl;
@@ -20,7 +19,6 @@ class Shop {
     );
   }
 }
-// Chat GPT Code END
 
 class CustomerPage extends StatefulWidget {
   const CustomerPage({Key? key}) : super(key: key);
