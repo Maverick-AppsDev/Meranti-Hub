@@ -47,6 +47,8 @@ dependencies:
   provider: ^6.0.5
   http: ^0.13.6
   path_provider: ^2.0.6
+  sliding_sheet: ^0.5.2
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
