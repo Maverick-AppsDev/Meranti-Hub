@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/constant.dart';
-import '../../components/shop_model.dart';
+import 'package:sprint1/components/shop_model.dart';
 
 class Shop {
   final String shopName;
@@ -36,6 +36,7 @@ class _CustomerPageState extends State<CustomerPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String shopImageURL = '';
+  String search = '';
 
   // Used to read the data of Shops
   Stream<List<Shop>> readShop() => FirebaseFirestore.instance
@@ -68,6 +69,9 @@ class _CustomerPageState extends State<CustomerPage> {
                 (BuildContext context, AsyncSnapshot<List<Shop>> snapshot) {
               if (snapshot.hasData) {
                 final shops = snapshot.data!;
+                // search filter
+                final filterShop = shops.where((shop) =>
+                    shop.shopName.toLowerCase().contains(search.toLowerCase()));
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -76,13 +80,13 @@ class _CustomerPageState extends State<CustomerPage> {
                     crossAxisSpacing: 10, // Add horizontal spacing
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  itemCount: shops.length,
+                  itemCount: filterShop.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final shop = shops[index];
+                    final shop = filterShop.elementAt(index);
                     return ShopModel(
                       shopName: shop.shopName,
-                      email: shop.email,
                       imageUrl: shop.imageUrl,
+                      email: shop.email,
                     );
                   },
                 );
@@ -104,19 +108,26 @@ class _CustomerPageState extends State<CustomerPage> {
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xfffd2e6),
-        title: const TextField(
-          decoration: InputDecoration(
+        title: TextField(
+          decoration: const InputDecoration(
             hintText: "Search...",
             border: InputBorder.none,
             hintStyle: TextStyle(color: Colors.white),
           ),
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
+          onChanged: (value) {
+            setState(() {
+              search = value;
+            });
+          },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              // perform search functionality
+              setState(() {
+                search = '';
+              });
             },
           ),
         ],
