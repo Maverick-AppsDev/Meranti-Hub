@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:sprint1/components/bottom_cart_sheet.dart';
 import 'package:sprint1/components/singal_products2.dart';
+import 'package:sprint1/pages/customer/item_product.dart';
 
 import '../../components/food.dart';
 
@@ -195,23 +198,31 @@ class _MenuPageState extends State<MenuPage> {
             ),
           ),
           // change to cart
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ItemProduct()));
+            },
+          ),
           Positioned(
             bottom: 16,
             right: 16,
             child: FloatingActionButton(
                 child: const Icon(
-                  Icons.add,
+                  Icons.add_shopping_cart,
                   color: Colors.white,
                 ),
                 backgroundColor: Colors.pink[300],
                 splashColor: Colors.amber,
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => AddNewItems(),
-                  //   ),
-                  // );
+                  showSlidingBottomSheet(context, builder: (context) {
+                    return SlidingSheetDialog(
+                        elevation: 8,
+                        cornerRadius: 16,
+                        builder: (context, state) {
+                          return BottomCartSheet();
+                        });
+                  });
                 }),
           ),
         ],
