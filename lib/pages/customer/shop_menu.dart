@@ -1,24 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sprint1/pages/seller/profile_page2.dart';
-import 'package:sprint1/pages/seller/categories.dart';
 import 'package:sprint1/components/singal_products2.dart';
 
 import '../../components/food.dart';
 
 class MenuPage extends StatefulWidget {
   final String email;
-  const MenuPage({Key? key, required this.email})
-      : super(key: key);
+  const MenuPage({Key? key, required this.email}) : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
 }
 
 class _MenuPageState extends State<MenuPage> {
-
-  String imageURL ="";
+  String imageURL = "";
+  String search = "";
 
   Widget listTile(
       {required IconData icon,
@@ -67,13 +63,7 @@ class _MenuPageState extends State<MenuPage> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Rices'),
-            const Text(
-              'View All',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
+          children: [const Text('Rices')],
         ),
       ),
       SizedBox(
@@ -84,11 +74,16 @@ class _MenuPageState extends State<MenuPage> {
                 (BuildContext context, AsyncSnapshot<List<Food>> snapshot) {
               if (snapshot.hasData) {
                 final riceProducts = snapshot.data!;
+                // search filter
+                final filterRice = riceProducts.where((riceProduct) =>
+                    riceProduct.name
+                        .toLowerCase()
+                        .contains(search.toLowerCase()));
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: riceProducts.length,
+                  itemCount: filterRice.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final riceProduct = riceProducts[index];
+                    final riceProduct = filterRice.elementAt(index);
                     return SingalProduct(
                       productImage: riceProduct.foodImgUrl,
                       productName: riceProduct.name,
@@ -117,10 +112,6 @@ class _MenuPageState extends State<MenuPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Noodles'),
-            const Text(
-              'View All',
-              style: TextStyle(color: Colors.grey),
-            ),
           ],
         ),
       ),
@@ -132,11 +123,16 @@ class _MenuPageState extends State<MenuPage> {
                 (BuildContext context, AsyncSnapshot<List<Food>> snapshot) {
               if (snapshot.hasData) {
                 final noodleProducts = snapshot.data!;
+                // search filter
+                final filterNoodle = noodleProducts.where((noodleProduct) =>
+                    noodleProduct.name
+                        .toLowerCase()
+                        .contains(search.toLowerCase()));
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: noodleProducts.length,
+                  itemCount: filterNoodle.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final noodleProduct = noodleProducts[index];
+                    final noodleProduct = filterNoodle.elementAt(index);
                     return SingalProduct(
                       productImage: noodleProduct.foodImgUrl,
                       productName: noodleProduct.name,
@@ -163,7 +159,7 @@ class _MenuPageState extends State<MenuPage> {
       backgroundColor: Colors.red[100],
       appBar: AppBar(
         backgroundColor: const Color(0xfffd2e6),
-        title: const Text('Home Page'),
+        title: const Text('Menu'),
         actions: [
           //IconButton(onPressed: logOut, icon: const Icon(Icons.logout))
         ],
@@ -174,17 +170,23 @@ class _MenuPageState extends State<MenuPage> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: ListView(
               children: [
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://citinewsroom.com/wp-content/uploads/2021/07/Food.jpg'),
-                    ),
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                TextField(
+                  decoration: InputDecoration(
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red.shade300),
+                      ),
+                      fillColor: Colors.red.shade50,
+                      filled: true,
+                      hintText: "Search...",
+                      hintStyle: TextStyle(color: Colors.blueGrey.shade300)),
+                  onChanged: (value) {
+                    setState(() {
+                      search = value;
+                    });
+                  },
                 ),
                 buildRicesProduct(),
                 buildNoodlesProduct(),
@@ -192,6 +194,7 @@ class _MenuPageState extends State<MenuPage> {
               ],
             ),
           ),
+          // change to cart
           Positioned(
             bottom: 16,
             right: 16,
@@ -209,12 +212,10 @@ class _MenuPageState extends State<MenuPage> {
                   //     builder: (context) => AddNewItems(),
                   //   ),
                   // );
-                }
-                ),
+                }),
           ),
         ],
       ),
     );
   }
-
 }
