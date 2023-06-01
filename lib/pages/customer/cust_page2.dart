@@ -2,20 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/constant.dart';
+import '../../components/shop_model.dart';
 
 class Shop {
   final String shopName;
   final String imageUrl;
+  final String email;
 
   Shop({
     required this.shopName,
     required this.imageUrl,
+    required this.email,
   });
 
   factory Shop.fromJson(Map<String, dynamic> json) {
     return Shop(
       shopName: json['shopName'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
+      email: json['id'] ?? '',
     );
   }
 }
@@ -39,28 +43,6 @@ class _CustomerPageState extends State<CustomerPage> {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Shop.fromJson(doc.data())).toList());
-
-  // Function to read the user's data from Firestore
-  Future<void> readUser() async {
-    final docUser =
-        FirebaseFirestore.instance.collection('users').doc(user.email);
-    // .doc(auth.currentUser?.email);
-    final snapshot = await docUser.get();
-
-    if (snapshot.exists) {
-      final user = snapshot.data();
-      final imageUrl = user?['imageUrl'] as String?;
-      if (imageUrl != null) {
-        setState(() {
-          shopImageURL = imageUrl;
-        });
-      } else {
-        setState(() {
-          shopImageURL = ''; // Assign a default value of an empty string
-        });
-      }
-    }
-  }
 
   // Widget to show the shops
   Widget buildShop() {
@@ -99,6 +81,7 @@ class _CustomerPageState extends State<CustomerPage> {
                     final shop = shops[index];
                     return ShopModel(
                       shopName: shop.shopName,
+                      email: shop.email,
                       imageUrl: shop.imageUrl,
                     );
                   },
@@ -175,52 +158,6 @@ class _CustomerPageState extends State<CustomerPage> {
                 ),
                 buildShop(),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ShopModel extends StatelessWidget {
-  final String shopName;
-  final String imageUrl;
-
-  const ShopModel({
-    required this.shopName,
-    required this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 2,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.network(
-            imageUrl,
-            height: 100,
-            width: 100,
-            fit: BoxFit.cover,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            shopName,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],
