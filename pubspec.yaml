@@ -49,6 +49,7 @@ dependencies:
   path_provider: ^2.0.6
   sliding_sheet: ^0.5.2
   get: ^4.6.5
+  flutter_barcode_scanner: ^2.0.0
 
 dev_dependencies:
   flutter_test:
