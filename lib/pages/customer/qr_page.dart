@@ -9,14 +9,21 @@ import 'package:sprint1/pages/customer/cust_page2.dart';
 import 'package:sprint1/pages/customer/table_input.dart';
 
 class QRPage extends StatefulWidget {
-  const QRPage({super.key});
+  const QRPage({super.key, required this.status});
 
+  final String status;
   @override
   State<QRPage> createState() => _QRPageState();
 }
 
 class _QRPageState extends State<QRPage> {
-  String _scanRes = 'Unknown';
+  String _scanRes = 'unknown';
+
+  void initState() {
+    super.initState();
+    _scanRes = widget.status;
+  }
+
   Future<void> scanQR() async {
     String qrScanRes;
     try {
@@ -42,18 +49,19 @@ class _QRPageState extends State<QRPage> {
       resNum = int.parse(_scanRes);
     } catch (e) {
       print('Invalide QR code');
+      qrScanRes = 'Invalid QR code';
     }
 
     // To be use to send the QR to the next page
-    // if (resNum > 0 && resNum < 10) {
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(
-    //       builder: (BuildContext context) {
-    //         return TableInput(tableNum: resNum);
-    //       },
-    //     ),
-    //   );
-    // }
+    if (resNum > 0 && resNum < 10) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return TableInput(tableNum: resNum);
+          },
+        ),
+      );
+    }
   }
 
   @override
@@ -61,7 +69,7 @@ class _QRPageState extends State<QRPage> {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        title: const Text('This is customer page 1'),
+        title: const Text('This is customer qr page'),
         automaticallyImplyLeading: false,
         backgroundColor: kPrimaryColor,
         leading: IconButton(
@@ -92,18 +100,21 @@ class _QRPageState extends State<QRPage> {
                   child: const Text('Start QR scan'),
                 ),
                 // ElevatedButton(
+                //   child: const Text('Test table transition'),
                 //   onPressed: () {
                 //     Navigator.of(context).push(
                 //       MaterialPageRoute(
                 //         builder: (BuildContext context) {
-                //           return const TableInput();
+                //           return TableInput(
+                //             tableNum: 0,
+                //           );
                 //         },
                 //       ),
                 //     );
                 //   },
-                //   child: const Text('Test table transition'),
                 // ),
                 ElevatedButton(
+                  child: const Text('Enter customer page'),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -112,10 +123,7 @@ class _QRPageState extends State<QRPage> {
                         },
                       ),
                     );
-
-                    //debugPrint('Viewing menu');
                   },
-                  child: const Text('Enter customer page'),
                 ),
                 Text(
                   'Scan result : $_scanRes\n',
