@@ -21,7 +21,7 @@ class BottomCartSheet extends StatefulWidget {
 
 class _BottomCartSheetState extends State<BottomCartSheet> {
   final Controller c = Get.find();
-
+  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -119,7 +119,11 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                                           Icons.remove,
                                           size: 22,
                                         ),
-                                        onPressed: () => c.decrement(),
+                                        onPressed:() {
+                                          setState(() {
+                                            c.decrementItem(widget.productName);
+                                          });
+                                        },
                                       ),
                                     ),
                                     Container(
@@ -154,7 +158,11 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                                           Icons.add,
                                           size: 22,
                                         ),
-                                        onPressed: () => c.increment(),
+                                        onPressed:() {
+                                          setState(() {
+                                            c.decrementItem(widget.productName);
+                                          });
+                                        },
                                       ),
                                     ),
                                   ],

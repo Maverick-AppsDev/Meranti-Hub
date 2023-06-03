@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sprint1/components/food_order.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CartItem {
   final String productName;
@@ -59,15 +61,58 @@ class Controller extends GetxController {
     cartItems.removeAt(index);
   }
 
-  void incrementItem(int index) {
+  void incrementItem(String name) {
+    int index = returnIndex(name);
     cartItems[index].quantity++;
   }
 
-  void decrementItem(int index) {
+  void decrementItem(String name) {
+    int index = returnIndex(name);
     if (cartItems[index].quantity > 1) {
       cartItems[index].quantity--;
     } else {
       removeCartItem(index);
     }
   }
+
+  int returnIndex(String name){
+    int index = 0;
+    for(int i=0; i < cartItems.length; i++){
+      if(name == cartItems[i].productName){
+        index = i;
+      }
+    }
+    return index;
+  }
+
+  // create the database
+  // Future createFoodOrder(FoodOrder food) async {
+  //   //final user = auth.currentUser;
+  //   //if (user != null) {
+  //     final collectRef = FirebaseFirestore.instance
+  //         .collection('customer')
+  //         .doc('table1')
+  //         .collection('order')
+  //         .doc();
+
+  //     final docId = collectRef.id;
+  //     final foodId = FoodOrder(
+  //         id: docId,
+  //         name: food.name,
+  //         price: food.price,
+  //         foodImgUrl: food.foodImgUrl,
+  //         quantity: food.quantity);
+  //     await collectRef.set(foodId.toJson());
+  //   //}
+  // }
+
+  // void add(CartItem item) {
+  //   final foodOrder = FoodOrder(
+  //                     name: item.productName,
+  //                     price: item.productPrice,
+  //                     foodImgUrl: item.productImage,
+  //                     quantity: item.quantity);
+  //   createFoodOrder(foodOrder);
+  // }
+
 }
