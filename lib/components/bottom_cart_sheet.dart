@@ -4,16 +4,7 @@ import 'package:get/get.dart';
 import 'controller.dart';
 
 class BottomCartSheet extends StatefulWidget {
-  final String productName;
-  final String productImage;
-  final double productPrice;
-
-  const BottomCartSheet({
-    Key? key,
-    required this.productName,
-    required this.productImage,
-    required this.productPrice,
-  }) : super(key: key);
+  const BottomCartSheet({super.key});
 
   @override
   State<BottomCartSheet> createState() => _BottomCartSheetState();
@@ -21,7 +12,7 @@ class BottomCartSheet extends StatefulWidget {
 
 class _BottomCartSheetState extends State<BottomCartSheet> {
   final Controller c = Get.find();
-  
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -36,143 +27,155 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Image.network(
-                              widget.productImage,
-                              height: 80,
-                              width: 80,
+                    for (int i = 0; i < c.cartItems.length; i++)
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 8,
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(bottom: 15),
-                                child: Text(
-                                  widget.productName,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Image.network(
+                                c.cartItems[i].productImage,
+                                height: 80,
+                                width: 80,
                               ),
-                              Container(
-                                child: Text(
-                                  "RM ${widget.productPrice.toStringAsFixed(2)}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.black,
-                                  size: 24,
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 15),
+                                  child: Text(
+                                    c.cartItems[i].productName,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                                SizedBox(height: 25),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(25),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 8,
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.remove,
-                                          size: 22,
-                                        ),
-                                        onPressed:() {
-                                          setState(() {
-                                            c.decrementItem(widget.productName);
-                                          });
-                                        },
-                                      ),
+                                Container(
+                                  child: Text(
+                                    "RM ${c.cartItems[i].productPrice.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      child: Obx(
-                                        () => Text(
-                                          "${c.products.toString()}",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 40,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(25),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 8,
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 22,
-                                        ),
-                                        onPressed:() {
-                                          setState(() {
-                                            c.decrementItem(widget.productName);
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            Spacer(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                      size: 24,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        c.removeCartItem(i);
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 25),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 2,
+                                              blurRadius: 8,
+                                            ),
+                                          ],
+                                        ),
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.remove,
+                                            size: 22,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              c.decrementItem(i);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Obx(
+                                          () => Text(
+                                            "${c.cartItems[i].quantity.toString()}",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 2,
+                                              blurRadius: 8,
+                                            ),
+                                          ],
+                                        ),
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 22,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              c.incrementItem(i);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -195,7 +198,7 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "RM ${widget.productPrice.toStringAsFixed(2)}",
+                    "RM ${c.totalPrice.toStringAsFixed(2)}",
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.black,
