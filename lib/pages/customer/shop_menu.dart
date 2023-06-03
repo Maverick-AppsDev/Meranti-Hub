@@ -5,6 +5,8 @@ import 'package:sprint1/components/bottom_cart_sheet.dart';
 import 'package:sprint1/components/singal_products2.dart';
 import 'package:sprint1/pages/customer/item_product.dart';
 import '../../components/food.dart';
+import 'package:sprint1/components/controller.dart';
+import 'package:get/get.dart';
 
 class MenuPage extends StatefulWidget {
   final String email;
@@ -22,6 +24,7 @@ class _MenuPageState extends State<MenuPage> {
   String imageURL = "";
   String search = "";
   String shopName = "";
+  final Controller c = Get.put(Controller());
 
   Widget listTile({
     required IconData icon,
@@ -270,10 +273,9 @@ class _MenuPageState extends State<MenuPage> {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => BottomCartSheet(
-                    productName: '', // Update with the correct product name
-                    productImage: '', // Update with the correct product image
-                    productPrice: double.parse(
-                        ''), // Update with the correct product price
+                    productName: c.cartItems[0].productName, // Update with the correct product name
+                    productImage: c.cartItems[0].productImage, // Update with the correct product image
+                    productPrice: c.cartItems[0].productPrice, // Update with the correct product price
                   ),
                 );
               },

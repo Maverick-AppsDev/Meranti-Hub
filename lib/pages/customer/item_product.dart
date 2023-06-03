@@ -147,6 +147,8 @@ class _ItemProductState extends State<ItemProduct> {
         icon: const Icon(Icons.add_shopping_cart),
         backgroundColor: Color.fromARGB(255, 240, 98, 146),
         onPressed: () {
+          final item = CartItem(productName: widget.productName, productImage: widget.productImage, productPrice: widget.productPrice);
+          c.addCartItem(item);
           showModalBottomSheet(
             context: context,
             builder: (context) => BottomCartSheet(
