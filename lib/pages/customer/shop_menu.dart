@@ -272,11 +272,7 @@ class _MenuPageState extends State<MenuPage> {
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
-                  builder: (context) => BottomCartSheet(
-                    productName: c.cartItems[0].productName, // Update with the correct product name
-                    productImage: c.cartItems[0].productImage, // Update with the correct product image
-                    productPrice: c.cartItems[0].productPrice, // Update with the correct product price
-                  ),
+                  builder: (context) => const BottomCartSheet(),
                 );
               },
             ),
