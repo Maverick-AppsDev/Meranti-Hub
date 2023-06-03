@@ -23,7 +23,7 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
         child: Column(
           children: [
             Container(
-              height: 500,
+              height: 382,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
