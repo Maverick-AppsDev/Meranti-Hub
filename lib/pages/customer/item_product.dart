@@ -4,13 +4,26 @@ import 'package:sprint1/components/constant.dart';
 import 'package:sprint1/components/controller.dart';
 import 'package:sprint1/pages/customer/shop_menu.dart';
 
+import '../../components/bottom_cart_sheet.dart';
+
 class ItemProduct extends StatefulWidget {
+  final String productName;
+  final String productImage;
+  final double productPrice;
+
+  const ItemProduct(
+      {super.key,
+      required this.productName,
+      required this.productImage,
+      required this.productPrice});
+
   @override
   State<ItemProduct> createState() => _ItemProductState();
 }
 
 class _ItemProductState extends State<ItemProduct> {
   final Controller c = Get.put(Controller());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +44,7 @@ class _ItemProductState extends State<ItemProduct> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     //image: AssetImage("lib/images/merantiLogo.png"),
-                    image: NetworkImage(
-                        'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?cs=srgb&dl=pexels-ash-376464.jpg&fm=jpg'),
+                    image: NetworkImage(widget.productImage),
                   ),
                 ),
                 child: InkWell(
@@ -60,7 +72,7 @@ class _ItemProductState extends State<ItemProduct> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "PRODUCT NAME",
+                            widget.productName,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -114,7 +126,7 @@ class _ItemProductState extends State<ItemProduct> {
                     Row(
                       children: [
                         Text(
-                          "PRODUCT PRICE",
+                          "RM ${widget.productPrice.toStringAsFixed(2)}",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
@@ -135,12 +147,12 @@ class _ItemProductState extends State<ItemProduct> {
         icon: const Icon(Icons.add_shopping_cart),
         backgroundColor: Color.fromARGB(255, 240, 98, 146),
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ,
-          //   ),
-          // );
+          final item = CartItem(productName: widget.productName, productImage: widget.productImage, productPrice: widget.productPrice, quantity: c.products.toInt());
+          c.addCartItem(item);
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => const BottomCartSheet(),
+          );
         },
       ),
     );
