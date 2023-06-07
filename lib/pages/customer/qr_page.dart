@@ -57,7 +57,7 @@ class _QRPageState extends State<QRPage> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return TableInput(tableNum: resNum);
+            return CustomerPage(tableNum: resNum);
           },
         ),
       );
@@ -113,18 +113,18 @@ class _QRPageState extends State<QRPage> {
                 //     );
                 //   },
                 // ),
-                ElevatedButton(
-                  child: const Text('Enter customer page'),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const CustomerPage();
-                        },
-                      ),
-                    );
-                  },
-                ),
+                // ElevatedButton(
+                //   child: const Text('Enter customer page'),
+                //   onPressed: () {
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //         builder: (BuildContext context) {
+                //           return const CustomerPage();
+                //         },
+                //       ),
+                //     );
+                //   },
+                // ),
                 Text(
                   'Scan result : $_scanRes\n',
                   style: const TextStyle(fontSize: 20),

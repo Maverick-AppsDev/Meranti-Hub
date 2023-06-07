@@ -25,7 +25,8 @@ class Shop {
 }
 
 class CustomerPage extends StatefulWidget {
-  const CustomerPage({Key? key}) : super(key: key);
+  final int tableNum;
+  const CustomerPage({Key? key, required this.tableNum}) : super(key: key);
 
   @override
   _CustomerPageState createState() => _CustomerPageState();
@@ -142,9 +143,9 @@ class _CustomerPageState extends State<CustomerPage> {
                   padding: const EdgeInsets.all(15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
-                        "Hello, Table 1! Ready to order?",
+                        "Hello, Table ${widget.tableNum}! Ready to order?",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
