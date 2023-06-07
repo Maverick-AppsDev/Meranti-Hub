@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/rounded_button.dart';
 import 'package:sprint1/components/background.dart';
-import 'package:sprint1/pages/auth_page.dart';
+import 'package:sprint1/pages/customer/qr_page.dart';
+import 'package:sprint1/pages/seller/auth_page.dart';
 import 'package:sprint1/components/constant.dart';
-import 'package:sprint1/pages/cust_page.dart';
+// import 'package:sprint1/pages/customer/cust_page2.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -49,7 +50,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return const CustomerPage();
+                      return const QRPage(status: 'entered qr page page',);
                     },
                   ),
                 );
