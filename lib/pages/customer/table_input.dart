@@ -7,9 +7,11 @@ import 'package:sprint1/pages/customer/qr_page.dart';
 
 class TableInput extends StatelessWidget {
   // need input tableNum as passing argument
-  const TableInput({super.key, required this.tableNum});
+  const TableInput({super.key, required this.tableNum, custName, phoneNum});
 
   final int tableNum;
+  final String custName = 'default';
+  final int phoneNum = 0000;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,28 @@ class TableInput extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios),
           ),
         ),
+        body: SafeArea(
+            child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Text('This is table' + tableNum.toString()),
+                const SizedBox(height: 20),
+                // MainTextField(
+                // controller: custName,
+                // hintText: 'Customer Name',
+                // obscureText: true),
+                // const SizedBox(height: 20),
+                // MainTextField(
+                //     controller: phoneNum,
+                //     hintText: 'phone Number',
+                //     obscureText: true),
+              ],
+            ),
+          ),
+        )),
       );
       // return CustomerPage();
     } else {
