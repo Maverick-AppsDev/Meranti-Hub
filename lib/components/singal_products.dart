@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sprint1/pages/edit_items.dart';
+import 'package:sprint1/pages/seller/edit_items.dart';
 
 class SingalProduct extends StatelessWidget {
   final String productImage;
