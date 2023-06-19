@@ -8,12 +8,16 @@ import '../../components/food.dart';
 import 'package:sprint1/components/controller.dart';
 import 'package:get/get.dart';
 
+import '../seller/order_page.dart';
+
 class MenuPage extends StatefulWidget {
   final String email;
+  final int tableNum;
 
   const MenuPage({
     Key? key,
     required this.email,
+    required this.tableNum,
   }) : super(key: key);
 
   @override
@@ -25,6 +29,13 @@ class _MenuPageState extends State<MenuPage> {
   String search = "";
   String shopName = "";
   final Controller c = Get.put(Controller());
+  bool showAdditionalButton = false;
+
+  void toggleAdditionalButton() {
+    setState(() {
+      showAdditionalButton = !showAdditionalButton;
+    });
+  }
 
   Widget listTile({
     required IconData icon,
@@ -117,10 +128,11 @@ class _MenuPageState extends State<MenuPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ItemProduct(
-                              productName: riceProduct.name,
-                              productImage: riceProduct.foodImgUrl,
-                              productPrice: riceProduct.price,
-                            ),
+                                productName: riceProduct.name,
+                                productImage: riceProduct.foodImgUrl,
+                                productPrice: riceProduct.price,
+                                email: widget.email,
+                                tableNum: widget.tableNum),
                           ),
                         );
                       },
@@ -186,6 +198,8 @@ class _MenuPageState extends State<MenuPage> {
                               productName: noodleProduct.name,
                               productImage: noodleProduct.foodImgUrl,
                               productPrice: noodleProduct.price,
+                              email: widget.email,
+                              tableNum: widget.tableNum,
                             ),
                           ),
                         );
@@ -222,14 +236,13 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[100],
-      appBar: AppBar(
-        backgroundColor: const Color(0xfffd2e6),
-        title: Text(shopName),
-        actions: [],
-      ),
-      body: Stack(
-        children: [
+        backgroundColor: Colors.red[100],
+        appBar: AppBar(
+          backgroundColor: const Color(0xfffd2e6),
+          title: Text(shopName),
+          actions: [],
+        ),
+        body: Stack(children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: ListView(
@@ -262,23 +275,59 @@ class _MenuPageState extends State<MenuPage> {
           Positioned(
             bottom: 16,
             right: 16,
-            child: FloatingActionButton(
-              child: const Icon(
-                Icons.add_shopping_cart,
-                color: Colors.white,
-              ),
-              backgroundColor: Colors.pink[300],
-              splashColor: Colors.amber,
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => const BottomCartSheet(),
-                );
-              },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: showAdditionalButton,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => BottomCartSheet(
+                              email: widget.email, tableNum: widget.tableNum));
+                    },
+                    child: Icon(
+                      Icons.add_shopping_cart,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: Colors.pink[300],
+                    heroTag: 'additional_button',
+                  ),
+                ),
+                SizedBox(height: 8),
+                Visibility(
+                  visible: showAdditionalButton,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // go to track page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OrderPage()),
+                      );
+                    },
+                    child: Icon(
+                      Icons.access_time_filled_sharp,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: Colors.pink[300],
+                    heroTag: 'additional_button',
+                  ),
+                ),
+                SizedBox(height: 16),
+                FloatingActionButton(
+                  onPressed: toggleAdditionalButton,
+                  child: Icon(
+                    showAdditionalButton ? Icons.close : Icons.add,
+                    color: Colors.white,
+                  ),
+                  backgroundColor:
+                      showAdditionalButton ? Colors.red : Colors.pink[300],
+                  heroTag: 'cart_button',
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          )
+        ]));
   }
 }
