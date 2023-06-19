@@ -217,7 +217,9 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                     ),
                     InkWell(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: c.cartItems.isEmpty ?
+                        null     
+                        : () {
                           // show the pop up window
                           showDialog(
                               context: context,
@@ -228,15 +230,17 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                                     actions: [
                                       TextButton(
                                         onPressed: () {
-                                          // Perform the action when 'Yes' is pressed
-                                          c.saveOrder(widget.email, widget.tableNum);
+                                          setState(() {
+                                            c.saveOrder(widget.email, widget.tableNum);
+                                          });
                                           Navigator.of(context).pop();
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => PaymentPage(
                                                   email: widget.email,
-                                                  tableNum: widget.tableNum),
+                                                  tableNum: widget.tableNum,
+                                                  totalPrice: c.totalPrice),
                                             ),
                                           );
                                         },
