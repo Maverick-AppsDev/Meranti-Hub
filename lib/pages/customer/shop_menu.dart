@@ -7,8 +7,7 @@ import 'package:sprint1/pages/customer/item_product.dart';
 import '../../components/food.dart';
 import 'package:sprint1/components/controller.dart';
 import 'package:get/get.dart';
-
-import '../seller/order_page.dart';
+import 'package:sprint1/pages/customer/order_page_cust.dart';
 
 class MenuPage extends StatefulWidget {
   final String email;
@@ -231,6 +230,7 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     super.initState();
     fetchShopName();
+    c.deleteCartList();
   }
 
   @override
@@ -303,7 +303,7 @@ class _MenuPageState extends State<MenuPage> {
                       // go to track page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OrderPage()),
+                        MaterialPageRoute(builder: (context) => OrderPage(email: widget.email)),
                       );
                     },
                     child: Icon(
