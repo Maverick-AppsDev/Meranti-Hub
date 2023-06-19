@@ -85,7 +85,10 @@ class _PaymentPageState extends State<PaymentPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PaymentTNG(),
+                          builder: (context) => PaymentTNG(
+                            email: widget.email,
+                            tableNum: widget.tableNum,
+                          ),
                         ),
                       );
                     },
