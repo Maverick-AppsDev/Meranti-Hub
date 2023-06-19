@@ -8,6 +8,7 @@ import 'package:sprint1/components/singal_products.dart';
 import '../../components/food.dart';
 import 'add_new_items.dart';
 import 'edit_items.dart';
+import 'order_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -222,6 +223,11 @@ class _HomePageState extends State<HomePage> {
                     title: "User Profile",
                     context: context,
                     nextScreen: const ProfilePage()),
+                listTile(
+                    icon: Icons.food_bank,
+                    title: "Track Order",
+                    context: context,
+                    nextScreen: const OrderPage()),
                 Container(
                   height: 300,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
