@@ -31,7 +31,6 @@ class _PaymentTNGState extends State<PaymentTNG> {
               child: Text("Use the link below to pay"),
               alignment: Alignment.center,
             ),
-            SizedBox(height: 10),
             Container(
               child: Text(
                 "https:link.tngdigital.com.my/thisIsDummyLink",
@@ -42,6 +41,14 @@ class _PaymentTNGState extends State<PaymentTNG> {
               ),
               alignment: Alignment.center,
             ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              // redirect to tracking page
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Finish Payment"),
+            )
           ],
         ),
       ),
