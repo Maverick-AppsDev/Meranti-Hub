@@ -228,8 +228,11 @@ class _MenuPageState extends State<MenuPage> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      
     fetchShopName();
     c.deleteCartList();
+    });
   }
 
   @override
