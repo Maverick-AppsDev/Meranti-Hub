@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sprint1/components/constant.dart';
+import 'package:sprint1/pages/customer/payment_tng.dart';
 import 'package:sprint1/pages/seller/order_page.dart';
 import 'package:square_in_app_payments/models.dart';
 import 'package:square_in_app_payments/in_app_payments.dart';
@@ -80,6 +81,13 @@ class _PaymentPageState extends State<PaymentPage> {
                     onPressed: () {
                       // Logic for paying using TNG
                       // Open e-wallet or redirect to TNG payment page
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentTNG(),
+                        ),
+                      );
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
