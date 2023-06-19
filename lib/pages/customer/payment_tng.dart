@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/constant.dart';
 import 'package:sprint1/pages/customer/payment_page.dart';
+import 'package:sprint1/pages/customer/shop_menu.dart';
 
 import 'order_page_cust.dart';
 
 class PaymentTNG extends StatefulWidget {
   final String email;
+  final int tableNum;
 
-  const PaymentTNG({super.key, required this.email});
+  const PaymentTNG({super.key, required this.email, required this.tableNum});
 
   @override
   State<PaymentTNG> createState() => _PaymentTNGState();
@@ -59,8 +61,9 @@ class _PaymentTNGState extends State<PaymentTNG> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrderPage(
+                    builder: (context) => MenuPage(
                       email: widget.email,
+                      tableNum: widget.tableNum,
                     ),
                   ),
                 );
