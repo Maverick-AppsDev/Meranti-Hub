@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sprint1/components/constant.dart';
+import 'package:sprint1/pages/customer/payment_tng.dart';
 import 'package:square_in_app_payments/models.dart';
 import 'package:square_in_app_payments/in_app_payments.dart';
 import 'package:sprint1/pages/customer/order_page_cust.dart';
@@ -10,7 +11,11 @@ class PaymentPage extends StatefulWidget {
   final int tableNum;
   final double totalPrice;
 
-  const PaymentPage({Key? key, required this.email, required this.tableNum, required this.totalPrice})
+  const PaymentPage(
+      {Key? key,
+      required this.email,
+      required this.tableNum,
+      required this.totalPrice})
       : super(key: key);
 
   @override
@@ -52,20 +57,20 @@ class _PaymentPageState extends State<PaymentPage> {
                     onPressed: () {
                       // Logic for paying in the counter
                       showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    title:
-                                        Text("Total Amount: RM${widget.totalPrice.toStringAsFixed(2)}"),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("Done"),
-                                      ),
-                                    ]);
-                              });
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                                title: Text(
+                                    "Total Amount: RM${widget.totalPrice.toStringAsFixed(2)}"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Done"),
+                                  ),
+                                ]);
+                          });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -96,6 +101,12 @@ class _PaymentPageState extends State<PaymentPage> {
                     onPressed: () {
                       // Logic for paying using TNG
                       // Open e-wallet or redirect to TNG payment page
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PaymentTNG(email: widget.email)));
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +182,9 @@ class _PaymentPageState extends State<PaymentPage> {
                       // Logic for navigating to the order tracking page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OrderPage(email: widget.email)),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                OrderPage(email: widget.email)),
                       );
                     },
                     child: Column(
