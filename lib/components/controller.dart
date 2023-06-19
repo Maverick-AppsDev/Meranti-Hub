@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sprint1/components/food_order.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CartItem {
   final String productName;
@@ -70,5 +72,29 @@ class Controller extends GetxController {
     } else {
       removeCartItem(index);
     }
+  }
+
+  void deleteCartList(){
+    cartItems.clear();
+  }
+
+  Future saveOrder(String email, int tableNum) async {
+
+    for(int i=0; i<cartItems.length; i++){
+      final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(email)
+        .collection('orders')
+        .doc();
+
+    final orderId = docUser.id;
+
+    final order = FoodOrder(id: orderId, name: cartItems[i].productName, price: cartItems[i].productPrice, foodImgUrl: cartItems[i].productImage, quantity: cartItems[i].quantity, tableNum: tableNum);
+    final json = order.toJson();
+    await docUser.set(json);
+
+    }
+    deleteCartList(); 
+
   }
 }
