@@ -57,16 +57,7 @@ class _PaymentTNGState extends State<PaymentTNG> {
             ),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MenuPage(
-                      email: widget.email,
-                      tableNum: widget.tableNum,
-                    ),
-                  ),
-                );
+                  Navigator.of(context).popUntil(ModalRoute.withName("/menu"));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pink[300],
