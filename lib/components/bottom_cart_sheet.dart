@@ -216,9 +216,6 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        c.saveOrder(widget.email, widget.tableNum);
-                      },
                       child: ElevatedButton(
                         onPressed: () {
                           // show the pop up window
@@ -232,6 +229,7 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                                       TextButton(
                                         onPressed: () {
                                           // Perform the action when 'Yes' is pressed
+                                          c.saveOrder(widget.email, widget.tableNum);
                                           Navigator.of(context).pop();
                                           Navigator.push(
                                             context,
