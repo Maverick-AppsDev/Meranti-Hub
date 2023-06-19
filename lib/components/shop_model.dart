@@ -5,12 +5,13 @@ class ShopModel extends StatelessWidget {
   final String shopName;
   final String email;
   final String imageUrl;
+  final int tableNum;
 
   const ShopModel(
       {Key? key,
       required this.shopName,
       required this.email,
-      required this.imageUrl})
+      required this.imageUrl, required this.tableNum})
       : super(key: key);
 
   @override
@@ -20,7 +21,8 @@ class ShopModel extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MenuPage(email: email),
+                    settings: RouteSettings(name: "/menu"),
+                    builder: (context) => MenuPage(email: email, tableNum: tableNum),
                   ));
             },
       child: Container(
