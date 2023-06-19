@@ -51,6 +51,7 @@ class _PaymentTNGState extends State<PaymentTNG> {
             ElevatedButton(
               // redirect to tracking page
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
