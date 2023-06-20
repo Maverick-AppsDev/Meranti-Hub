@@ -88,6 +88,7 @@ class _CustomerPageState extends State<CustomerPage> {
                       shopName: shop.shopName,
                       imageUrl: shop.imageUrl,
                       email: shop.email,
+                      tableNum: widget.tableNum,
                     );
                   },
                 );

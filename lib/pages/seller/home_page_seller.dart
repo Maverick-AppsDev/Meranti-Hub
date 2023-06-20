@@ -2,13 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1/pages/seller/profile_page2.dart';
-import 'package:sprint1/pages/seller/categories.dart';
 import 'package:sprint1/components/singal_products.dart';
-
 import '../../components/food.dart';
 import 'add_new_items.dart';
-import 'edit_items.dart';
-import 'order_page.dart';
+import 'package:sprint1/pages/seller/order_page_seller.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

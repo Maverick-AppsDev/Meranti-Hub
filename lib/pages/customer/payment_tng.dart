@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sprint1/components/constant.dart';
-import 'package:sprint1/pages/customer/payment_page.dart';
-import 'package:sprint1/pages/customer/shop_menu.dart';
-
-import 'order_page_cust.dart';
 
 class PaymentTNG extends StatefulWidget {
   final String email;

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:sprint1/pages/seller/profile_page2.dart';
 
 class FirebaseServices {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -15,11 +14,6 @@ class FirebaseServices {
     return users
         .doc('currentUser.uid')
         .update(data)
-        //.then(
-        //(value) {
-        // Navigator.pushNamed(context, );
-        //},
-        //)
         .catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

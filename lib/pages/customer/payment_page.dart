@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sprint1/components/constant.dart';
 import 'package:sprint1/pages/customer/payment_tng.dart';
 import 'package:square_in_app_payments/models.dart';

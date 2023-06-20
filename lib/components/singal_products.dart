@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sprint1/pages/seller/edit_items.dart';
@@ -13,7 +12,8 @@ class SingalProduct extends StatelessWidget {
   final ImagePicker imagePicker = ImagePicker();
   //final Function onTap;
   SingalProduct(
-      {required this.productImage,
+      {super.key,
+      required this.productImage,
       required this.productName,
       required this.productPrice,
       required this.productId,

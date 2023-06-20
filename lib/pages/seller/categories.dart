@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:sprint1/pages/seller/add_new_items.dart';
 import 'package:sprint1/services/firebase_services.dart';
-// import 'package:sprint1/pages/provider/cat_provider.dart';
 
 class Categories extends StatelessWidget {
   @override

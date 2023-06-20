@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sprint1/components/constant.dart';
 import 'package:sprint1/components/controller.dart';
-import 'package:sprint1/pages/customer/shop_menu.dart';
-
-import '../../components/bottom_cart_sheet.dart';
+import 'package:sprint1/components/bottom_cart_sheet.dart';
 
 class ItemProduct extends StatefulWidget {
   final String productName;
   final String productImage;
   final double productPrice;
+  final String email;
+  final int tableNum;
 
   const ItemProduct(
       {super.key,
       required this.productName,
       required this.productImage,
-      required this.productPrice});
+      required this.productPrice, 
+      required this.email, 
+      required this.tableNum});
 
   @override
   State<ItemProduct> createState() => _ItemProductState();
@@ -151,7 +153,7 @@ class _ItemProductState extends State<ItemProduct> {
           c.addCartItem(item);
           showModalBottomSheet(
             context: context,
-            builder: (context) => const BottomCartSheet(),
+            builder: (context) => BottomCartSheet(email: widget.email, tableNum: widget.tableNum),
           );
         },
       ),

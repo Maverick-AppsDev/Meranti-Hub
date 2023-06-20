@@ -32,10 +32,10 @@ class Controller extends GetxController {
       Get.snackbar(
         "Take Order",
         "Please add the food quantity",
-        icon: Icon(Icons.alarm),
+        icon: const Icon(Icons.alarm),
         barBlur: 20,
         isDismissible: true,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       );
     } else {
       products.value--;
@@ -81,11 +81,12 @@ class Controller extends GetxController {
   Future saveOrder(String email, int tableNum) async {
 
     for(int i=0; i<cartItems.length; i++){
+      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
       final docUser = FirebaseFirestore.instance
         .collection('users')
         .doc(email)
         .collection('orders')
-        .doc();
+        .doc(uniqueFileName);
 
     final orderId = docUser.id;
 

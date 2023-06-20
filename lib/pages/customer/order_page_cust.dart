@@ -50,10 +50,7 @@ class _OrderPageState extends State<OrderPage> {
           return ListView.builder(
             itemCount: groupedOrders.length,
             itemBuilder: (context, index) {
-              final tableNum = groupedOrders.keys.elementAt(
-                  groupedOrders.length -
-                      1 -
-                      index); // Reverse the order of keys
+              final tableNum = groupedOrders.keys.elementAt(index); // Reverse the order of keys
               final ordersForTable = groupedOrders[tableNum]!;
 
               return Column(
@@ -87,6 +84,19 @@ class _OrderPageState extends State<OrderPage> {
         }
       },
     );
+  }
+
+  // Function to update the groupedOrders map after deleting an order
+  void updateGroupedOrdersMap(
+      Map<int, List<FoodOrder>> groupedOrders, FoodOrder order) {
+    if (groupedOrders.containsKey(order.tableNum)) {
+      groupedOrders[order.tableNum]!
+          .remove(order); // Remove the specific order from the list
+      if (groupedOrders[order.tableNum]!.isEmpty) {
+        groupedOrders.remove(order
+            .tableNum); // If the list becomes empty, remove the table entry
+      }
+    }
   }
 
   @override
