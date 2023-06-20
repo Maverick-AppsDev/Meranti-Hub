@@ -62,30 +62,26 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: ordersForTable.length,
-                    itemBuilder: (context, index) {
-                      final order = ordersForTable[index];
-                      return Card(
+                  ...ordersForTable.map(
+                    (order) => Card(
                         child: ListTile(
-                          leading: Image.network(order.foodImgUrl),
-                          title: Text(order.name),
-                          subtitle:
-                              Text('RM ${order.price.toStringAsFixed(2)}'),
-                          trailing: IconButton(
-                            icon: Icon(Icons.check_circle),
-                            iconSize: 40,
-                            onPressed: () {
-                              // Logic to delete the order
-                              // You can call a function here to delete the order
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                      leading: Image.network(order.foodImgUrl),
+                      title: Text(order.name),
+                      subtitle: Text(order.quantity.toString()),
+                      trailing: IconButton(
+                          icon: Icon(Icons.check_circle),
+                          iconSize: 40,
+                          onPressed: () {
+                            // Logic to delete the order
+                            final deleteRef = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user.email)
+                                .collection('orders')
+                                .doc(order.id);
+                            deleteRef.delete();
+                          }),
+                    )),
+                  )
                 ],
               );
             },
@@ -97,6 +93,19 @@ class _OrderPageState extends State<OrderPage> {
         }
       },
     );
+  }
+
+  // Function to update the groupedOrders map after deleting an order
+  void updateGroupedOrdersMap(
+      Map<int, List<FoodOrder>> groupedOrders, FoodOrder order) {
+    if (groupedOrders.containsKey(order.tableNum)) {
+      groupedOrders[order.tableNum]!
+          .remove(order); // Remove the specific order from the list
+      if (groupedOrders[order.tableNum]!.isEmpty) {
+        groupedOrders.remove(order
+            .tableNum); // If the list becomes empty, remove the table entry
+      }
+    }
   }
 
   @override
